@@ -10,7 +10,7 @@ const discoveryInstructions = {
 };
 
 
-const rokuDevice = neeoapi.buildDevice('Roku IP  Control')
+const rokuDevice = neeoapi.buildDevice('Roku IP Control')
     .setManufacturer('NEEO')
     .addAdditionalSearchToken('Roku')
     .setType('VOD')
@@ -37,7 +37,7 @@ function startSdkExample(brain) {
         devices: [rokuDevice]
     })
         .then(() => {
-            console.log('# READY! use the NEEO app to search for "NEEO Simple Device".');
+            console.log('# READY! use the NEEO app to search for "Roku IP Control".');
         })
         .catch((error) => {
 

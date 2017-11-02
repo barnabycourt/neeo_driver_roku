@@ -14,7 +14,7 @@ const SEARCH_TIMEOUT = 10 * 1000;
 
 let devices = {};
 
-let getDevice = (device_id) =>{
+let discoverDevices = () => {
     let device, info;
     Nodeku(SEARCH_TIMEOUT)
         .then(device_found => {
@@ -23,22 +23,21 @@ let getDevice = (device_id) =>{
             return device.info();
         })
         .then(info_result => {
-            info = info_result;
-            devices[info["device-id"]] = device;
-            return [
+            devices[info_result["device-id"]] =
                 {
-                    id: info["device-id"],
-                    name: info["user-device-name"],
+                    id: info_result["device-id"],
+                    name: info_result["user-device-name"],
                     device: device,
-                }]
+
+                };
         })
         .catch(err => {
             debug(err.stack);
-            // return [];
         })
 };
 
-getDevice();
+//Trigger device discovery automatically
+discoverDevices();
 
 let key_map = {
     'CURSOR LEFT': 'left',
@@ -55,7 +54,7 @@ module.exports.onButtonPressed = function (button_name, device_id) {
     debug(`ButtonPressed Device: ${device_id}: ${button_name} button pressed`);
     let device = devices[device_id];
 
-    if (! device){
+    if (!device) {
         debug(`Device: ${device_id} not found`);
         return;
     }
@@ -65,27 +64,7 @@ module.exports.onButtonPressed = function (button_name, device_id) {
     }
 };
 
-module.exports.discoverRokuDevices = function (){
+module.exports.discoverRokuDevices = function () {
     debug('Getting Discovery Function');
-    let device, info;
-    return Nodeku(SEARCH_TIMEOUT)
-        .then(device_found => {
-            device = device_found;
-            debug(`device found at: ${device.ip()}`);
-            return device.info();
-        })
-        .then(info_result => {
-            info = info_result;
-            devices[info["device-id"]] = device;
-            return [
-                {
-                    id: info["device-id"],
-                    name: info["user-device-name"],
-                    device: device,
-                }]
-        })
-        .catch(err => {
-            debug(err.stack);
-            return [];
-        })
+    return Object.values(devices);
 };
