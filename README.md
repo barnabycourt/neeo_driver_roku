@@ -11,6 +11,10 @@ The driver attempt to auto-discover and manage a roku on your network.
 - Node.js version 7.10+
 - Nodeku 
 
+## Debugging
+Set an environment variable named DEBUG to "*" for debug output from all modules or 
+"neeo_roku_driver" to enable debugging output from just neeo_driver_roku. 
+
 ## TODO 
 - Support more than one Roku on a network
 - Allow for a fixed IP address
