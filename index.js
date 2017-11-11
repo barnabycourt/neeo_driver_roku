@@ -20,8 +20,8 @@ const rokuDevice = neeoapi.buildDevice('Roku IP Control')
     .addButtonGroup('Menu and Back')
 
     // Add shortcut buttons
-    // .addButton({ name: 'netflix', label: 'Netflix' })
-    // .addButton({ name: 'amazon', label: 'Amazon' })
+    .addButton({ name: 'app:12', label: 'Netflix' })
+    .addButton({ name: 'app:13', label: 'Amazon' })
 
     // Add the power button group so neeo doesn't think the device is stupid
     .addButtonGroup('Power')
@@ -46,6 +46,9 @@ function startSdkExample(brain) {
             process.exit(1);
         });
 }
+
+//Trigger device discovery automatically. Seed the value from the environment if predefined defined
+controller.discoverDevices(process.env.ROKU_DEVICES);
 
 const brainIp = process.env.BRAINIP;
 if (brainIp) {
