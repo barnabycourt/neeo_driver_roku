@@ -2,12 +2,19 @@
   "name": "neeo-driver-roku",
   "version": "0.0.0",
   "private": true,
-  "main": "index.js",
+  "main": "devices/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "neeo-sdk start"
+  },
+  "engines": {
+    "node": ">=6.0.0"
   },
   "dependencies": {
-    "neeo-sdk": "^0.45.7",
-    "nodeku": "^1.0.14"
+    "neeo-sdk": "^0.50.0",
+    "nodeku": "^1.0.20"
+  },
+  "neeoSdkOptions": {
+    "brainHost": "192.168.1.169"
   }
 }

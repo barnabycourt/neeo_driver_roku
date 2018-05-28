@@ -3,7 +3,7 @@
 const Nodeku = require('nodeku');
 const Device = require('nodeku/lib/device');
 const keys = require('nodeku/lib/keys');
-const debug = require('debug')('neeo_roku_driver');
+const debug = require('debug')('neeo_roku_driver:controller');
 
 const SEARCH_TIMEOUT = 10 * 1000;
 
@@ -15,31 +15,32 @@ let devices = {};
 
 let discoverDevices = (predefined_devices) => {
     let device;
-
     // First populate any predefined devices
     if (predefined_devices) {
-        predefined_devices.split(",").map(function (val) {
-            val = val.trim();
-            // Add the port if it is nt pre-specified
-            if (! val.contains(":")){
-                val = val + ":8060";
-            }
-            // Get the device information & populate it
-            let predefined_device = Device(val);
-            predefined_device.info().then(info_result => {
-                debug(`Configuring predefined device: ${info_result["device-id"]}`);
-                devices[info_result["device-id"]] =
-                    {
-                        id: info_result["device-id"],
-                        name: info_result["user-device-name"],
-                        device: predefined_device,
-                    };
-            }).catch(err => {
-                debug(err.stack);
-            });
+        debug("Using a predefined device: " + predefined_devices);
+        if (! predefined_devices.contains(":")){
+            predefined_devices = predefined_devices + ":8060";
+        }
+        debug("Sending info to " + predefined_devices);
+        let predefined_device = Device(predefined_devices);
+        predefined_device.info().then(info_result => {
+            debug(`Configuring predefined device: ${info_result["device-id"]}`);
+            devices[info_result["device-id"]] =
+                {
+                    id: info_result["device-id"],
+                    name: info_result["user-device-name"],
+                    device: predefined_device,
+                };
+        }).catch(err => {
+            debug(err.stack);
         });
+        debug("Finished setting up device");
+        return [{
+            id: 'roku1',
+            name: 'rokuName1',
+            device: predefined_device,
+        }];
     }
-
     Nodeku(SEARCH_TIMEOUT)
         .then(device_found => {
             device = device_found;
@@ -57,6 +58,7 @@ let discoverDevices = (predefined_devices) => {
         .catch(err => {
             debug(err.stack);
         });
+
 };
 
 let key_map = {
@@ -88,9 +90,15 @@ module.exports.onButtonPressed = function (button_name, device_id) {
     }
 };
 
+
+module.exports.initialize = function (){
+    debug("Initializing roku controller, performing initial discovery");
+    discoverDevices(process.env.ROKU_DEVICES)
+};
+
 module.exports.discoverRokuDevices = function () {
     debug('Getting Discovery Function');
+    debug(devices);
     return Object.values(devices);
 };
 
-module.exports.discoverDevices = discoverDevices;
