@@ -18,7 +18,7 @@ let discoverDevices = (predefined_devices) => {
     // First populate any predefined devices
     if (predefined_devices) {
         debug("Using a predefined device: " + predefined_devices);
-        if (! predefined_devices.includes(":")){
+        if (!predefined_devices.includes(":")) {
             debug("Device docesn't contain a port, appending one now");
             predefined_devices = predefined_devices + ":8060";
         }
@@ -84,7 +84,7 @@ module.exports.onButtonPressed = function (button_name, device_id) {
         debug(`sending key ${key_map[button_name]}`);
         device.keypress(key_map[button_name]);
     }
-    if (button_name.startsWith("app:")){
+    if (button_name.startsWith("app:")) {
         let app_id = button_name.substring(4);
         debug(`launching app ${app_id}`);
         device.launch(app_id);
@@ -92,7 +92,7 @@ module.exports.onButtonPressed = function (button_name, device_id) {
 };
 
 
-module.exports.initialize = function (){
+module.exports.initialize = function () {
     debug("Initializing roku controller, performing initial discovery");
     discoverDevices(process.env.ROKU_DEVICES)
 };
