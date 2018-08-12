@@ -18,7 +18,8 @@ let discoverDevices = (predefined_devices) => {
     // First populate any predefined devices
     if (predefined_devices) {
         debug("Using a predefined device: " + predefined_devices);
-        if (! predefined_devices.contains(":")){
+        if (! predefined_devices.includes(":")){
+            debug("Device docesn't contain a port, appending one now");
             predefined_devices = predefined_devices + ":8060";
         }
         debug("Sending info to " + predefined_devices);
