@@ -16,6 +16,11 @@ is assumed. For example `ROKU_DEVICES=192.168.1.5:8060,192.168.1.7`.
 - Node.js version 7.10+
 - Nodeku 
 
+## Configuration
+Edit the package.json for neeo_driver_roku to set the brainHost option to the ip address of your neeo brain
+on the local network. In theory you could remove the neeoSdkOptions section from the package.json entirely
+and the neeo brain should be discovered automatically but that has often proven unreliable.
+
 ## Debugging
 Set an environment variable named DEBUG to "*" for debug output from all modules or 
 "neeo_roku_driver" to enable debugging output from just neeo_driver_roku. 
